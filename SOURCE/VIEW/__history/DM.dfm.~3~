@@ -1,0 +1,55 @@
+object DataModule1: TDataModule1
+  Height = 201
+  Width = 389
+  PixelsPerInch = 96
+  object FDConnection1: TFDConnection
+    Params.Strings = (
+      'DriverID=MSSQL'
+      'User_Name=sa'
+      'Server=.\SQLEXPRESS'
+      'Password=1208')
+    LoginPrompt = False
+    Left = 104
+    Top = 72
+  end
+  object SQLConnection1: TSQLConnection
+    DriverName = 'MSSQL9'
+    LoginPrompt = False
+    Params.Strings = (
+      'SchemaOverride=%.dbo'
+      'DriverUnit=DBXMSSQL'
+      
+        'DriverPackageLoader=TDBXDynalinkDriverLoader,DBXCommonDriver270.' +
+        'bpl'
+      
+        'DriverAssemblyLoader=Borland.Data.TDBXDynalinkDriverLoader,Borla' +
+        'nd.Data.DbxCommonDriver,Version=24.0.0.0,Culture=neutral,PublicK' +
+        'eyToken=91d62ebb5b0d1b1b'
+      
+        'MetaDataPackageLoader=TDBXMsSqlMetaDataCommandFactory,DbxMSSQLDr' +
+        'iver270.bpl'
+      
+        'MetaDataAssemblyLoader=Borland.Data.TDBXMsSqlMetaDataCommandFact' +
+        'ory,Borland.Data.DbxMSSQLDriver,Version=24.0.0.0,Culture=neutral' +
+        ',PublicKeyToken=91d62ebb5b0d1b1b'
+      'GetDriverFunc=getSQLDriverMSSQL'
+      'LibraryName=dbxmss9.dll'
+      'VendorLib=sqlncli11.dll'
+      'VendorLibWin64=sqlncli11.dll'
+      'HostName=.\SQLEXPRESS'
+      'DataBase=Database Name'
+      'MaxBlobSize=-1'
+      'LocaleCode=0000'
+      'IsolationLevel=ReadCommitted'
+      'OSAuthentication=False'
+      'PrepareSQL=True'
+      'User_Name=user'
+      'Password=password'
+      'BlobSize=-1'
+      'ErrorResourceFile='
+      'OS Authentication=False'
+      'Prepare SQL=False')
+    Left = 224
+    Top = 72
+  end
+end

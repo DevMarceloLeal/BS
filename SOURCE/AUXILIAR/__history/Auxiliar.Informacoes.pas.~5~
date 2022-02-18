@@ -1,0 +1,175 @@
+unit Auxiliar.Informacoes;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  Winsock,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Auxiliar.Datas;
+
+  function Nome_Sistema: String;
+  function Versao_Sistema: String;
+  function Obter_IP_Externo: String;
+  function Obter_IP_Interno: string;
+  function IndexOf(pArray: array of string; pTexto: String): Integer;
+  function CalcularIdade(Nascimento: TDate): Integer;
+
+implementation
+
+///####################################################################################################################
+/// Função   : Nome_Sistema()
+/// Objetivo : Responsável Pelo Retorno do Nome do Sistema
+///####################################################################################################################
+function Nome_Sistema: String;
+var
+  PathSys: String;
+
+begin
+  PathSys := ExtractFileDir(Application.ExeName);
+  Result := String(Application.ExeName).Replace('.exe', '').Replace(PathSys, '').Replace('\','');
+end;
+
+///####################################################################################################################
+/// Função   : Versao_Sistema()
+/// Objetivo : Responsável Pelo Retorno da Versão do Sistema
+///####################################################################################################################
+function Versao_Sistema: String;
+type
+    PFFI = ^vs_FixedFileInfo;
+var
+    F : PFFI;
+    Handle : Dword;
+    Len : Longint;
+    Data : Pchar;
+    Buffer : Pointer;
+    Tamanho : Dword;
+    pArquivo: Pchar;
+    Arquivo : String;
+
+begin
+  Arquivo := Application.ExeName;
+  pArquivo := StrAlloc(Length(Arquivo) + 1);
+  StrPcopy(pArquivo, Arquivo);
+  Len := GetFileVersionInfoSize(pArquivo, Handle);
+  Result := '';
+  if Len > 0 then
+     begin
+       Data := StrAlloc(Len+1);
+       if GetFileVersionInfo(pArquivo, Handle, Len, Data) then
+          begin
+            VerQueryValue(Data, '\',Buffer,Tamanho);
+            F := PFFI(Buffer);
+            Result := Format('Versão : %d.%d.%d.%d',[HiWord(F^.dwFileVersionMs),LoWord(F^.dwFileVersionMs),HiWord(F^.dwFileVersionLs),Loword(F^.dwFileVersionLs)]);
+          end;
+          StrDispose(Data);
+     end;
+
+  StrDispose(pArquivo);
+end;
+
+///####################################################################################################################
+/// Função   : Obter_IP_Externo()
+/// Objetivo : Responsável Pelo Retorno do IP Remoto "Externo"
+///####################################################################################################################
+function Obter_IP_Externo: string;
+var
+  WSAData: TWSAData;
+  HostEnt: PHostEnt;
+  Name: AnsiString;
+
+begin
+  WSAStartup(2, WSAData);
+  SetLength(Name, 255);
+  Gethostname(PAnsiChar(Name), 255);
+  SetLength(Name, StrLen(PChar(String(Name))));
+  HostEnt := gethostbyname(PAnsiChar(Name));
+  with HostEnt^ do
+    begin
+      Result := Format('%d.%d.%d.%d', [Byte(h_addr^[0]),Byte(h_addr^[1]), Byte(h_addr^[2]),Byte(h_addr^[3])]);
+    end;
+
+  WSACleanup;
+end;
+
+///####################################################################################################################
+/// Função   : Obter_IP_Interno()
+/// Objetivo : Responsável Pelo Retorno do IP Local "Interno"
+///####################################################################################################################
+function Obter_IP_Interno: string;
+type
+  TaPInAddr = array [0..10] of PInAddr;
+  PaPInAddr = ^TaPInAddr;
+
+var
+  phe: PHostEnt;
+  pptr: PaPInAddr;
+  Buffer: array [0..63] of Ansichar;
+  i: Integer;
+  GInitData: TWSADATA;
+
+begin
+  WSAStartup($101, GInitData);
+  Result := '';
+  GetHostName(Buffer, SizeOf(Buffer));
+  phe := GetHostByName(Buffer);
+  if phe = nil then
+     Exit;
+
+  i := 0;
+  pptr := PaPInAddr(phe^.h_addr_list);
+  while pptr^[i] <> nil do
+    begin
+      Result := String(inet_ntoa(pptr^[i]^));
+      Inc(i);
+    end;
+
+  WSACleanup;
+end;
+
+
+function IndexOf(pArray: array of string; pTexto: String): Integer;
+var
+  i: integer;
+  output: integer;
+
+begin
+  output := 0;
+  for i := 0 to Length(pArray) - 1 do
+    if pArray[i] = pTexto then
+       begin
+         result := i;
+         exit;
+       end;
+
+  Result := output;
+end;
+
+function CalcularIdade(Nascimento: TDate): Integer;
+var
+  Month, Day, Year, CurrentYear, CurrentMonth, CurrentDay: Word;
+
+begin
+  DecodeDate(Nascimento, Year, Month, Day);
+  DecodeDate(Date, CurrentYear, CurrentMonth, CurrentDay);
+  if (Year = CurrentYear) and (Month = CurrentMonth) and (Day = CurrentDay) then
+     begin
+       Result := 0;
+     end
+  else
+     begin
+       Result := CurrentYear - Year;
+       if (Month > CurrentMonth) then
+          Dec(Result)
+       else
+          begin
+            if Month = CurrentMonth then
+              if (Day > CurrentDay) then
+                Dec(Result);
+          end;
+     end;
+end;
+
+end.

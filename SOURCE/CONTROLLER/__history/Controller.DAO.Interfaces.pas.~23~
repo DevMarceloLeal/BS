@@ -1,0 +1,42 @@
+unit Controller.DAO.Interfaces;
+
+interface
+
+uses
+  Vcl.Forms,
+  Vcl.DBGrids,
+  Data.DB,
+  Auxiliar.Variaveis.Globais;
+
+type
+  iModelDAOParametros = interface
+    ['{7667509D-BB4B-4757-AA63-6EE1EDD30A30}']
+    function Formulario(pForm: TForm; pAtribuir: Boolean = False): iModelDAOParametros;
+    procedure Gravar;
+  end;
+
+  iModelDAOPessoa = interface
+    ['{65D3AF98-A505-4ADB-94F4-905B439F5FD3}']
+    function Criar_Tabela: iModelDAOPessoa;
+    function Formulario(pForm: TForm): iModelDAOPessoa;
+    function Operacao(pOperacao: TOperacao): iModelDAOPessoa;
+    function Carregar_Registros(pDBGrid: TDBGrid; pDataSource: TDataSource): iModelDAOPessoa;
+    procedure Montar_Janela_Manutencao(pDataSource: TDataSource);
+    procedure Executar_Operacoes(pDataSource: TDataSource);
+  end;
+
+  iModelDAODoacao = interface
+    ['{64357BF2-9013-4B40-8988-C1DCEDFB4A71}']
+    function Criar_Tabela: iModelDAODoacao;
+  end;
+
+  iControllerDAO = interface
+    ['{A792D5C0-5E62-4699-AC0E-B37B66227030}']
+    function Parametros: iModelDAOParametros;
+    function Pessoa: iModelDAOPessoa;
+    function Doacao: iModelDAODoacao;
+  end;
+
+implementation
+
+end.

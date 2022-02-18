@@ -1,0 +1,71 @@
+unit Model.DAO.Pessoa;
+
+interface
+
+uses
+  System.SysUtils,
+  Vcl.Forms,
+  Data.DB,
+  Model.Conexao.Interfaces,
+  Controller.Conexao.Interfaces,
+  Controller.Conexao.Factory,
+  Controller.DAO.Interfaces,
+  Auxiliar.Dialogos,
+  Classe.Pessoa;
+
+type
+  TModelDAOPessoa = class(TInterfacedObject, iModelDAOPessoa)
+  private
+    FConexao: iModelConexaoFactory;
+    FTexto: String;
+    procedure ExecSQL(pSql: String);
+  public
+    constructor Create;
+    destructor Destroy; override;
+    class function New: iModelDAOPessoa;
+    function Criar_Tabela: iModelDAOPessoa;
+  end;
+
+implementation
+
+{ TModelDAOPessoa }
+
+constructor TModelDAOPessoa.Create;
+begin
+  FConexao := TControllerConexao.New.Conexao;
+end;
+
+destructor TModelDAOPessoa.Destroy;
+begin
+  inherited;
+end;
+
+procedure TModelDAOPessoa.ExecSQL(pSql: String);
+begin
+  try
+    FConexao.Query.ExecSQL(pSql);
+  except on E: Exception do
+    MsgSys('Erro ao Executar Comando SQL !!!' + #13#13 + E.Message);
+  end;
+end;
+
+class function TModelDAOPessoa.New: iModelDAOPessoa;
+begin
+  Result := Self.Create;
+end;
+
+function TModelDAOPessoa.Criar_Tabela: iModelDAOPessoa;
+begin
+  Result := Self;
+
+  try
+    if not FConexao.DBFuncoes.Banco_Dados_Existe('Pessoa', False) then
+       begin
+          ExecSQL(TPessoa.SQL_Criar_Tabela);
+       end;
+  except on E: Exception do
+    MsgSys('Erro ao Criar Tabela !!!' + #13#13 + E.Message);
+  end;
+end;
+
+end.

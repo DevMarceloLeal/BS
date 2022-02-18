@@ -1,0 +1,45 @@
+unit Controller.DAO.Factory;
+
+interface
+
+uses
+  Controller.DAO.Interfaces,
+  Model.DAO.Parametros;
+
+type
+  TController = class(TInterfacedObject, iControllerDAO)
+  private
+    FDAOParametros: iModelDAOParametros;
+  public
+    constructor Create;
+    destructor Destroy; override;
+    class function New : iControllerDAO;
+    function Parametros: iModelDAOParametros;
+  end;
+
+implementation
+
+{ TController }
+
+constructor TController.Create;
+begin
+  FDAOParametros := TModelDAOParametros.New;
+end;
+
+destructor TController.Destroy;
+begin
+  inherited;
+end;
+
+class function TController.New: iControllerDAO;
+begin
+  Result := Self.Create;
+end;
+
+function TController.Parametros: iModelDAOParametros;
+begin
+  Result := FDAOParametros;
+end;
+
+end.
+

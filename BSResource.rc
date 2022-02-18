@@ -1,0 +1,4 @@
+img_erro RCDATA "SOURCE\\IMAGENS\\dialog-error.png"
+img_info RCDATA "SOURCE\\IMAGENS\\dialog-information.png"
+img_pergunta RCDATA "SOURCE\\IMAGENS\\dialog-question.png"
+img_cuidado RCDATA "SOURCE\\IMAGENS\\dialog-warning.png"

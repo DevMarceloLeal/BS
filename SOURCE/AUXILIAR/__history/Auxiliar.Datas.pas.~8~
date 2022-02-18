@@ -1,0 +1,162 @@
+unit Auxiliar.Datas;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils;
+
+  function NomeDia(const i: Word; const Tipo: Integer): String;
+  function NomeMes(const i: Word; const Tipo: integer): String;
+  function DataPorExtenso: String;
+  function DataStr: String;
+  function HoraStr: String;
+  function DataHoraStr: String;
+  function DataSQL(pData: String): String;
+
+const
+   aDiaSemana : array [0 .. 6]  of string = ('Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado');
+   aMes       : array [1 .. 12] of string = ('Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro');
+
+implementation
+
+///####################################################################################################################
+/// Função   : NomeDia()
+/// Objetivo : Responsável Pelo Retorno do Nome do Dia da Semana
+///####################################################################################################################
+function NomeDia(const i: Word; const Tipo: Integer): String;
+begin
+  if (tipo = 0) then
+     Result := aDiaSemana[i] // extenso
+  else
+     Result := copy(aDiaSemana[i], 1, 3); // abreviado
+end;
+
+///####################################################################################################################
+/// Função   : NomeMes()
+/// Objetivo : Responsável Pelo Retorno do Nome do Mês
+///####################################################################################################################
+function NomeMes(const i: Word; const Tipo: integer): String;
+begin
+  if (tipo = 0) then
+     Result := aMes[i] // Extenso
+  else
+     Result := copy(aMes[i], 1, 3); // Abreviado
+end;
+
+///####################################################################################################################
+/// Função   : DataPorExtenso()
+/// Objetivo : Responsável Pelo Retorno da Data Por Extenso
+///####################################################################################################################
+function DataPorExtenso: String;
+var
+  NoDia: integer;
+  Dta: TDateTime;
+  Dia, mes, Ano: word;
+
+begin
+  Dta := Date;
+  DecodeDate(Dta, Ano, mes, Dia);
+  NoDia := DayOfWeek(Dta) - 1;
+  Result := Format('%s, %s de %s de %s',[NomeDia(NoDia, 0), IntToStr(Dia), NomeMes(mes, 0), IntToStr(Ano)]);
+end;
+
+///####################################################################################################################
+/// Função   : Data()
+/// Objetivo : Responsável Pelo Retorno da Data do Sistema
+///####################################################################################################################
+function DataStr: String;
+begin
+  Result := FormatDateTime('dd/mm/yyyy', Date);
+end;
+
+///####################################################################################################################
+/// Função   : Hora()
+/// Objetivo : Responsável Pelo Retorno da Hora do Sistema
+///####################################################################################################################
+function HoraStr: String;
+begin
+  Result := TimeToStr(Time);
+end;
+
+///####################################################################################################################
+/// Função   : DataSQL()
+/// Objetivo : Responsável Pelo Retorno da Data para Sintaxe SQL
+///####################################################################################################################
+function DataSQL(pData: String): String;
+var
+  DataSys: TDateTime;
+
+begin
+  if TryStrToDate(pData, DataSys) then
+     Result := FormatDateTime('yyyy-mm-dd hh:nn:ss', DataSys)
+  else
+     Result := 'NULL';
+end;
+
+// Convert String in YYYY-MM-DD HH:NN:SS.ZZZ to TDatetime
+// in Delphi XE6 and previous format strings are not thread safe
+// in Delphi 5 and lower, TFormatSettings are not available
+// so this is threadsafe, if a little inelegant;
+function SQLDateStrToDate(ASQLDate : string) : TDateTime;
+var
+  lDate, lTime :string;
+  p,c : integer;
+  y,d,m,h,n,s,z : word;
+
+begin
+  result := 0;
+  p := Pos('-',ASQLDate);
+  if p < 1 then
+     exit;
+
+  // Time and Date separation
+  lDate := trim(ASQLDate);
+  p := pos(' ',lDate);
+  lTime := '';
+  if ( p > 0) then
+     begin
+       lTime := copy(lDate,p+1,MaxInt);
+       lDate := copy(lDate,1,p-1);
+     end;
+
+  p := pos('-',lDate);
+
+  // Date must be of the format 'YYYY-MM-DD'
+  if (p <> 5) then
+     exit;
+
+  Val(Copy(lDate,1,4),y,c);
+  if c < 1 then
+     begin
+       Val(Copy(ldate,6,2),m,c);
+       if c<1 then
+          Val(Copy(ldate,9,2),d,c);
+
+       Result := EncodeDate(y,m,d);
+     end;
+
+  // Time must be 24hr
+  p := pos(':',lTime);
+  if (p < 1) then
+     exit;
+
+  h := 0; n := 0; s := 0; z := 0;
+  Val(copy(lTime,1,p-1),h,c);
+  if c < 1 then
+     begin
+       Val(copy(lTime,4,2),n,c);
+       if c > 0 then
+          exit;
+
+       Val(copy(lTime,7,2),s,c);
+
+       p := pos('.',lTime);
+       if p > 0 then
+          Val(copy(lTime,p+1,3),z,c);
+
+       Result := result + EncodeTime(h,n,s,z);
+     end;
+end;
+
+end.

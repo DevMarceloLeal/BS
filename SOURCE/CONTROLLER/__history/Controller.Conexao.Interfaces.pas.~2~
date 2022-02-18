@@ -1,0 +1,21 @@
+unit Controller.Conexao.Interfaces;
+
+interface
+
+uses
+  Model.Conexao.Interfaces;
+//  Model.DAO.Interfaces;
+
+type
+  i
+
+
+  iController = interface
+    ['{A0EBF566-2322-4EB1-A216-08A83CDED2A3}']
+    function Conexao: iModelConexaoFactory;
+//    function DAO: iModelDAOFactory;
+  end;
+
+implementation
+
+end.

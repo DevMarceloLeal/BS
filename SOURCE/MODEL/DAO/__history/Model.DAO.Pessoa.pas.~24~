@@ -1,0 +1,108 @@
+unit Model.DAO.Pessoa;
+
+interface
+
+uses
+  System.SysUtils,
+  Vcl.Forms,
+  Data.DB,
+  Model.Conexao.Interfaces,
+  Controller.Conexao.Interfaces,
+  Controller.Conexao.Factory,
+  Controller.DAO.Interfaces,
+  Auxiliar.Datas,
+  Auxiliar.Classes,
+  Auxiliar.Dialogos,
+  Classe.BS.Pessoa;
+
+type
+  TRegistro = record
+    Nome: String;
+    TipoSang: String;
+    Email: String;
+    Celular: String;
+    CPF: String;
+  end;
+
+  TModelDAOPessoa = class(TInterfacedObject, iModelDAOPessoa)
+  private
+    FConexao: iModelConexaoFactory;
+    procedure ExecSQL(pSql: String);
+    procedure Criar_Registros;
+  public
+    constructor Create;
+    destructor Destroy; override;
+    class function New: iModelDAOPessoa;
+    function Criar_Tabela: iModelDAOPessoa;
+  end;
+
+const
+  FRegistros: array[0..2] of TRegistro =
+  (
+      (Nome:'Marcelo Leal'; TipoSang:'B+'; Email: 'lealsistemas@hotmail.com'; Celular: '96548-7754'; CPF:'123.456.789-89'),
+      (Nome:'Marcelo';      TipoSang:'B+'; Email: 'lealsistemas@hotmail.com'; Celular: '96548-7754'; CPF:'123.456.789-89'),
+      (Nome:'Leal';         TipoSang:'B+'; Email: 'lealsistemas@hotmail.com'; Celular: '96548-7754'; CPF:'123.456.789-89')
+  );
+
+implementation
+
+{ TModelDAOPessoa }
+
+constructor TModelDAOPessoa.Create;
+begin
+  FConexao := TControllerConexao.New.Conexao;
+end;
+
+destructor TModelDAOPessoa.Destroy;
+begin
+  inherited;
+end;
+
+procedure TModelDAOPessoa.ExecSQL(pSql: String);
+begin
+  try
+    FConexao.Query.ExecSQL(pSql);
+  except on E: Exception do
+    MsgSys('Erro ao Executar Comando SQL !!!' + #13#13 + E.Message);
+  end;
+end;
+
+procedure TModelDAOPessoa.Criar_Registros;
+var
+  I: Integer;
+  FClasse: TBS_Pessoa;
+
+begin
+  for I := 0 to 2 do
+    begin
+      FClasse := TBS_Pessoa.New;
+      FClasse.PES_NOME     := FRegistros[I].Nome;
+      FClasse.PES_TIPOSANG := FRegistros[I].TipoSang;
+      FClasse.PES_EMAIL    := FRegistros[I].Email;
+      FClasse.PES_CELULAR  := FRegistros[I].Celular;
+      FClasse.PES_CPF      := FRegistros[I].Cpf;
+      ExecSQL(ClasseToSQL(FClasse));
+    end;
+end;
+
+class function TModelDAOPessoa.New: iModelDAOPessoa;
+begin
+  Result := Self.Create;
+end;
+
+function TModelDAOPessoa.Criar_Tabela: iModelDAOPessoa;
+begin
+  Result := Self;
+
+  try
+    if not FConexao.DBFuncoes.Banco_Dados_Existe('BS_PESSOA', False) then
+       begin
+         ExecSQL(TPessoa.SQL_Criar_Tabela);
+         Criar_Registros;
+       end;
+  except on E: Exception do
+    MsgSys('Erro ao Criar Tabela !!!' + #13#13 + E.Message);
+  end;
+end;
+
+end.

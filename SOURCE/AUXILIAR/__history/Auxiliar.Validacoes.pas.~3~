@@ -1,0 +1,252 @@
+unit Auxiliar.Validacoes;
+
+interface
+
+uses
+  System.SysUtils,
+  Winapi.Windows,
+  Winapi.WinInet,
+  Auxiliar.Dialogos;
+
+  function IsNumero(const Texto: String): Boolean;
+  function IsLetra(const Texto: String): Boolean;
+  function iif(Condicao, ParteTRUE, ParteFALSE: Variant): Variant;
+
+  function CaseOfString(s: string; a: array of string): Integer;
+  function IsEmailValido(const Value: string): boolean;
+
+const
+  FSiteList: array of PWidechar = ['http://www.google.com/', 'http://www.microsoft.com/', 'http://www.yahoo.com/'];
+
+implementation
+
+/// ####################################################################################################################
+/// Função   : IsNumero()
+/// Objetivo : Responsável Pela Verificação da Existência de Números em Uma Variável
+/// ####################################################################################################################
+function IsNumero(const Texto: String): Boolean;
+var
+  i: integer;
+
+begin
+  Result := False;
+  for i := 1 to Length(Texto) do
+    if (CharInSet(Texto[i], ['0' .. '9'])) or
+       (String(Texto[i]).Contains('.')) or
+       (String(Texto[i]).Contains(',')) then
+       Result := True
+    else
+       begin
+         Msg('Somente Números São Permitidos !!!', '', 3);
+         keybd_event(VK_BACK, 0, 0, 0);
+         Result := False;
+       end;
+end;
+
+/// ####################################################################################################################
+/// Função   : IsLetra()
+/// Objetivo : Responsável Pela Verificação da Existência de Letras em Uma Variável
+/// ####################################################################################################################
+function IsLetra(const Texto: String): Boolean;
+var
+  i: integer;
+
+begin
+  Result := False;
+  for i := 1 to Length(Texto) do
+    if CharInSet(Texto[i], ['a' .. 'z', 'A' .. 'Z']) then
+       Result := True
+    else
+       begin
+         Msg('Somente Letras São Permitidas !!!', '', 3);
+         keybd_event(VK_BACK, 0, 0, 0);
+         Result := False;
+       end;
+end;
+
+/// ####################################################################################################################
+/// Função   : IsInternet()
+/// Objetivo : Verifica Se Existe Conexão Com a Internet
+/// ####################################################################################################################
+function IsInternet: Boolean;
+var
+  i: Byte;
+
+begin
+  Result := False;
+
+  for i := 0 to Pred(Length(FSiteList)) do
+    begin
+      Result := InternetCheckConnection(FSiteList[i], 1, 0);
+      if Result then
+         Break;
+    end;
+end;
+
+/// ####################################################################################################################
+/// Função   : IIF()
+/// Objetivo : Responsável Por Pequenos e Rápidos Testes
+/// ####################################################################################################################
+function iif(Condicao, ParteTRUE, ParteFALSE: Variant): Variant;
+begin
+  if Condicao then
+     Result := ParteTRUE
+  else
+     Result := ParteFALSE;
+end;
+
+/// ####################################################################################################################
+/// Função   : ValidaCNPJ()
+/// Objetivo : Responsável pela validação de CNPJ'S
+/// ####################################################################################################################
+function ValidarCNPJ(const pCNPJ: String): Boolean;
+var
+  v: array [1 .. 2] of Word;
+  cnpj: array [1 .. 14] of Byte;
+  i: Byte;
+
+begin
+  try
+    for i := 1 to 14 do
+      cnpj[i] := StrToInt(pCNPJ[i]);
+
+    // Nota: Calcula o primeiro dígito de verificação.
+    v[1] := 5 * cnpj[1] + 4 * cnpj[2] + 3 * cnpj[3] + 2 * cnpj[4];
+    v[1] := v[1] + 9 * cnpj[5] + 8 * cnpj[6] + 7 * cnpj[7] + 6 * cnpj[8];
+    v[1] := v[1] + 5 * cnpj[9] + 4 * cnpj[10] + 3 * cnpj[11] + 2 * cnpj[12];
+    v[1] := 11 - v[1] mod 11;
+    v[1] := iif(v[1] >= 10, 0, v[1]);
+
+    // Nota: Calcula o segundo dígito de verificação.
+    v[2] := 6 * cnpj[1] + 5 * cnpj[2] + 4 * cnpj[3] + 3 * cnpj[4];
+    v[2] := v[2] + 2 * cnpj[5] + 9 * cnpj[6] + 8 * cnpj[7] + 7 * cnpj[8];
+    v[2] := v[2] + 6 * cnpj[9] + 5 * cnpj[10] + 4 * cnpj[11] + 3 * cnpj[12];
+    v[2] := v[2] + 2 * v[1];
+    v[2] := 11 - v[2] mod 11;
+    v[2] := iif(v[2] >= 10, 0, v[2]);
+
+    // Nota: Verdadeiro se os dígitos de verificação são os esperados.
+    Result := ((v[1] = cnpj[13]) and (v[2] = cnpj[14]));
+  except
+    on E: Exception do
+      Result := False;
+  end;
+end;
+
+/// ####################################################################################################################
+/// Função   : ValidaCPF()
+/// Objetivo : Responsável pela validação de CPF
+/// ####################################################################################################################
+function ValidarCPF(const pCPF: String): Boolean;
+var
+  v: array [0 .. 1] of Word;
+  cpf: array [0 .. 10] of Byte;
+  i: Byte;
+
+begin
+  try
+    for i := 1 to 11 do
+      cpf[i - 1] := StrToInt(pCPF[i]);
+
+    // Nota: Calcula o primeiro dígito de verificação.
+    v[0] := 10 * cpf[0] + 9 * cpf[1] + 8 * cpf[2];
+    v[0] := v[0] + 7 * cpf[3] + 6 * cpf[4] + 5 * cpf[5];
+    v[0] := v[0] + 4 * cpf[6] + 3 * cpf[7] + 2 * cpf[8];
+    v[0] := 11 - v[0] mod 11;
+    v[0] := iif(v[0] >= 10, 0, v[0]);
+
+    // Nota: Calcula o segundo dígito de verificação.
+    v[1] := 11 * cpf[0] + 10 * cpf[1] + 9 * cpf[2];
+    v[1] := v[1] + 8 * cpf[3] + 7 * cpf[4] + 6 * cpf[5];
+    v[1] := v[1] + 5 * cpf[6] + 4 * cpf[7] + 3 * cpf[8];
+    v[1] := v[1] + 2 * v[0];
+    v[1] := 11 - v[1] mod 11;
+    v[1] := iif(v[1] >= 10, 0, v[1]);
+
+    // Nota: Verdadeiro se os dígitos de verificação são os esperados.
+    Result := ((v[0] = cpf[9]) and (v[1] = cpf[10]));
+  except
+    on E: Exception do
+      Result := False;
+  end;
+end;
+
+/// ####################################################################################################################
+// Função   : ValidarCEP()
+// Objetivo : Responsável Por Validar o CEP
+/// ####################################################################################################################
+function ValidarCEP(const NumCEP: String): Boolean;
+begin
+  if Length(NumCEP) = 8 then
+     Result := IsNumero(NumCEP)
+  else
+     Result := False;
+end;
+
+///####################################################################################################################
+// Função   : CaseOfStrings
+// Objetivo : Responsável Por Retornar a Posição de uma String Dentro de um Array
+///####################################################################################################################
+function CaseOfString(s: string; a: array of string): Integer;
+begin
+  Result := 0;
+
+  while (Result < Length(a)) and (a[Result] <> s) do
+    Inc(Result);
+
+  if (a[Result] <> s) then
+     Result := -1;
+end;
+
+///####################################################################################################################
+// Função   : IsEmailValido
+// Objetivo : Responsável Por Retornar se O Email Informado é Válido
+///####################################################################################################################
+function IsEmailValido(const Value: string): boolean;
+  function Verificar_Permitido(const s: string): boolean;
+  var
+    i: integer;
+
+  begin
+    Result := False;
+    for i:= 1 to Length(s) do
+      begin
+        // Caracter Ilegal não Valida o Endereço
+        if not (s[i] in ['a'..'z','A'..'Z','0'..'9','_','-','.','@']) then
+           Exit;
+      end;
+    Result := True;
+  end;
+
+var
+  i: integer;
+  nomePart, servidorPart: string;
+
+begin
+  Result := False;
+
+  i := Pos('@', Value);
+  if (i = 0) then
+    Exit;
+
+  if(pos('..', Value) > 0) or (pos('@@', Value) > 0) or (pos('.@', Value) > 0)then
+    Exit;
+
+  if(pos('.', Value) = 1) or (pos('@', Value) = 1) then
+    Exit;
+
+  nomePart := Copy(Value, 1, i - 1);
+  servidorPart := Copy(Value, i + 1, Length(Value));
+  if (Length(nomePart) = 0) or (Length(servidorPart) < 5)    then
+     Exit; // Muito Curto
+
+  i := Pos('.', servidorPart);
+
+  // Deve Ter Ponto e Pelo Menos 3 Lugares do Final
+  if (i = 0) or (i > (Length(servidorPart)-2)) then
+     Exit;
+
+  Result := Verificar_Permitido(nomePart) and Verificar_Permitido(servidorPart);
+end;
+
+end.

@@ -1,0 +1,24 @@
+unit Controller.Conexao.Interfaces;
+
+interface
+
+uses
+  Vcl.Forms,
+  Model.Conexao.Interfaces;
+
+type
+  iModelParametros = interface
+    ['{2C5556E5-E7F6-4100-AEFF-5C9B9F9A3979}']
+    function Formulario(pForm: TForm; pAtribuir: Boolean = False): iModelParametros;
+    procedure Gravar;
+  end;
+
+  iControllerConexao = interface
+    ['{CF6DE8AC-08A8-40AF-BA18-4117A16FCD26}']
+    function Parametros: iModelParametros;
+    function Conexao: iModelConexao;
+  end;
+
+implementation
+
+end.

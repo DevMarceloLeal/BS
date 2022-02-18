@@ -1,0 +1,85 @@
+unit Classe.BS_Pessoa;
+
+interface
+
+uses
+  System.SysUtils,
+  Vcl.Forms,
+  Model.Conexao.Interfaces,
+  Model.FireDAC.DataFunctions,
+  Auxiliar.Datas,
+  Auxiliar.Dialogos,
+  Auxiliar.Comandos.SQL;
+
+type
+  TPessoa = class
+  private
+    FPES_ID: Integer;
+    FPES_NOME: String;
+    FPES_DATANASC: TDateTime;
+    FPES_TIPOSANG: String;
+    FPES_EMAIL: String;
+    FPES_CELULAR: String;
+    FPES_CPF: String;
+    FDBFuncoes: iModelFuncoes;
+  public
+    constructor Create;
+    destructor Destroy; override;
+    class function New: TPessoa;
+    class function SQL_Criar_Tabela: String;
+    property PES_ID:       Integer   read FPES_ID       write FPES_ID;
+    property PES_NOME:     String    read FPES_NOME     write FPES_NOME;
+    property PES_DATANASC: TDateTime read FPES_DATANASC write FPES_DATANASC;
+    property PES_TIPOSANG: String    read FPES_TIPOSANG write FPES_TIPOSANG;
+    property PES_EMAIL:    String    read FPES_EMAIL    write FPES_EMAIL;
+    property PES_CELULAR:  String    read FPES_CELULAR  write FPES_CELULAR;
+    property PES_CPF:      String    read FPES_CPF      write FPES_CPF;
+  end;
+
+const
+  FTabela: String = 'BS_PESSOA';
+  FCampos: String = 'PES_ID INT NOT NULL IDENTITY, '+
+                    'PES_NOME VARCHAR(100) NOT NULL, ' +
+                    'PES_DATANASC DATE NOT NULL, ' +
+                    'PES_TIPOSANG CHAR(02) NOT NULL, ' +
+                    'PES_EMAIL VARCHAR(100) NOT NULL, ' +
+                    'PES_CELULAR VARCHAR(100) NOT NULL, ' +
+                    'PES_CPF VARCHAR(100) NOT NULL ' +
+                    'CONSTRAINT pk_PES_ID PRIMARY KEY (PES_ID)';
+
+implementation
+
+{ TPessoa }
+
+constructor TPessoa.Create;
+begin
+  FDBFuncoes := TDataFunctions.New;
+  try
+    PES_ID       := FDBFuncoes.Gerar_ID(FTabela);
+    PES_NOME     := '';
+    PES_DATANASC := StrToDate(DataStr);
+    PES_TIPOSANG := '';
+    PES_EMAIL    := '';
+    PES_CELULAR  := '';
+    PES_CPF      := '';
+  except
+    MsgSys('Erro ao Criar Nova Instância da Classe PESSOA !!!',3);
+  end;
+end;
+
+destructor TPessoa.Destroy;
+begin
+  inherited;
+end;
+
+class function TPessoa.New: TPessoa;
+begin
+  Result := Self.Create;
+end;
+
+class function TPessoa.SQL_Criar_Tabela: String;
+begin
+  Result := SQL_Criar_Tabela_Dados(FTabela, FCampos, 'MSSQL');
+end;
+
+end.

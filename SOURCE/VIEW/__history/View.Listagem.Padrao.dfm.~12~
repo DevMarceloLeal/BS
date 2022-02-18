@@ -1,0 +1,472 @@
+object frmBaseListagem: TfrmBaseListagem
+  Left = 0
+  Top = 0
+  Caption = 'frmBaseListagem'
+  ClientHeight = 441
+  ClientWidth = 795
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  KeyPreview = True
+  PixelsPerInch = 96
+  TextHeight = 15
+  object RLReportBase: TRLReport
+    Left = 0
+    Top = 0
+    Width = 794
+    Height = 1123
+    Degrade.Direction = ddVertical
+    Degrade.OppositeColor = clSilver
+    Degrade.Granularity = 2
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    PreviewOptions.BorderIcons = [biSystemMenu]
+    PrintDialog = False
+    Title = 'Listagem Base'
+    object RLBand_Cabecalho_Titulo: TRLBand
+      Left = 38
+      Top = 38
+      Width = 718
+      Height = 32
+      BandType = btHeader
+      Borders.Sides = sdCustom
+      Borders.DrawLeft = False
+      Borders.DrawTop = True
+      Borders.DrawRight = False
+      Borders.DrawBottom = True
+      Borders.Width = 2
+      Color = 14540253
+      Degrade.OppositeColor = clSilver
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      Font.Quality = fqProof
+      ParentColor = False
+      ParentFont = False
+      Transparent = False
+      object RLSystemInfo1: TRLSystemInfo
+        Left = 336
+        Top = 6
+        Width = 46
+        Height = 19
+        Align = faCenter
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -16
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Font.Quality = fqProof
+        Info = itTitle
+        ParentFont = False
+        Text = ''
+        Transparent = False
+      end
+      object RLSystemInfo2: TRLSystemInfo
+        Left = 632
+        Top = 2
+        Width = 86
+        Height = 14
+        Align = faRightTop
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = [fsItalic]
+        Font.Quality = fqProof
+        ParentFont = False
+        Text = 'Emiss'#227'o : '
+        Transparent = False
+      end
+      object RLSystemInfo4: TRLSystemInfo
+        Left = 683
+        Top = 16
+        Width = 35
+        Height = 14
+        Align = faRightBottom
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = [fsItalic]
+        Font.Quality = fqProof
+        Info = itHour
+        ParentFont = False
+        Text = ''
+        Transparent = False
+      end
+    end
+    object RLBand_Dados_Header: TRLBand
+      Left = 38
+      Top = 70
+      Width = 718
+      Height = 20
+      BandType = btHeader
+      Borders.Sides = sdCustom
+      Borders.DrawLeft = False
+      Borders.DrawTop = False
+      Borders.DrawRight = False
+      Borders.DrawBottom = True
+      Borders.Width = 2
+      Degrade.OppositeColor = clGray
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      Font.Quality = fqProof
+      ParentFont = False
+      object RLLblCampo1: TRLLabel
+        Left = 5
+        Top = 0
+        Width = 60
+        Height = 16
+        Align = faTopOnly
+        Caption = 'Campo 1'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Font.Quality = fqProof
+        ParentFont = False
+        Visible = False
+      end
+      object RLLblCampo2: TRLLabel
+        Left = 70
+        Top = 0
+        Width = 60
+        Height = 16
+        Align = faTopOnly
+        Caption = 'Campo 2'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Font.Quality = fqProof
+        ParentFont = False
+        Visible = False
+      end
+      object RLLblCampo3: TRLLabel
+        Left = 143
+        Top = 0
+        Width = 60
+        Height = 16
+        Align = faTopOnly
+        Caption = 'Campo 3'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Font.Quality = fqProof
+        ParentFont = False
+        Visible = False
+      end
+      object RLLblCampo4: TRLLabel
+        Left = 209
+        Top = 0
+        Width = 60
+        Height = 16
+        Align = faTopOnly
+        Caption = 'Campo 3'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Font.Quality = fqProof
+        ParentFont = False
+        Visible = False
+      end
+      object RLLblCampo5: TRLLabel
+        Left = 275
+        Top = 0
+        Width = 60
+        Height = 16
+        Align = faTopOnly
+        Caption = 'Campo 3'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Font.Quality = fqProof
+        ParentFont = False
+        Visible = False
+      end
+      object RLLblCampo6: TRLLabel
+        Left = 341
+        Top = 0
+        Width = 60
+        Height = 16
+        Align = faTopOnly
+        Caption = 'Campo 3'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Font.Quality = fqProof
+        ParentFont = False
+        Visible = False
+      end
+      object RLLblCampo7: TRLLabel
+        Left = 407
+        Top = 0
+        Width = 60
+        Height = 16
+        Align = faTopOnly
+        Caption = 'Campo 3'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Font.Quality = fqProof
+        ParentFont = False
+        Visible = False
+      end
+      object RLLblCampo8: TRLLabel
+        Left = 473
+        Top = 0
+        Width = 60
+        Height = 16
+        Align = faTopOnly
+        Caption = 'Campo 3'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Font.Quality = fqProof
+        ParentFont = False
+        Visible = False
+      end
+      object RLLblCampo9: TRLLabel
+        Left = 539
+        Top = 0
+        Width = 60
+        Height = 16
+        Align = faTopOnly
+        Caption = 'Campo 3'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Font.Quality = fqProof
+        ParentFont = False
+        Visible = False
+      end
+    end
+    object RLBand_Dados_Registros: TRLBand
+      Left = 38
+      Top = 90
+      Width = 718
+      Height = 23
+      Borders.Sides = sdCustom
+      Borders.DrawLeft = False
+      Borders.DrawTop = False
+      Borders.DrawRight = False
+      Borders.DrawBottom = True
+      Borders.Style = bsHorizontal
+      object RLDBText1: TRLDBText
+        Left = 5
+        Top = 6
+        Width = 60
+        Height = 16
+        Align = faBottomOnly
+        Alignment = taCenter
+        AutoSize = False
+        Layout = tlCenter
+        Text = ''
+        Visible = False
+      end
+      object RLDBText2: TRLDBText
+        Left = 68
+        Top = 6
+        Width = 78
+        Height = 16
+        Align = faBottomOnly
+        AutoSize = False
+        Borders.Style = bsBDiagonal
+        Layout = tlCenter
+        Text = ''
+        Visible = False
+      end
+      object RLDBText3: TRLDBText
+        Left = 148
+        Top = 6
+        Width = 83
+        Height = 16
+        Align = faBottomOnly
+        AutoSize = False
+        Borders.Style = bsBDiagonal
+        Layout = tlCenter
+        Text = ''
+        Visible = False
+      end
+      object RLDBText4: TRLDBText
+        Left = 233
+        Top = 6
+        Width = 83
+        Height = 16
+        Align = faBottomOnly
+        AutoSize = False
+        Borders.Style = bsBDiagonal
+        Layout = tlCenter
+        Text = ''
+        Visible = False
+      end
+      object RLDBText5: TRLDBText
+        Left = 318
+        Top = 6
+        Width = 83
+        Height = 16
+        Align = faBottomOnly
+        AutoSize = False
+        Borders.Style = bsBDiagonal
+        Layout = tlCenter
+        Text = ''
+        Visible = False
+      end
+      object RLDBText6: TRLDBText
+        Left = 403
+        Top = 6
+        Width = 83
+        Height = 16
+        Align = faBottomOnly
+        AutoSize = False
+        Borders.Style = bsBDiagonal
+        Layout = tlCenter
+        Text = ''
+        Visible = False
+      end
+      object RLDBText7: TRLDBText
+        Left = 490
+        Top = 6
+        Width = 83
+        Height = 16
+        Align = faBottomOnly
+        AutoSize = False
+        Borders.Style = bsBDiagonal
+        Layout = tlCenter
+        Text = ''
+        Visible = False
+      end
+      object RLDBText8: TRLDBText
+        Left = 579
+        Top = 6
+        Width = 83
+        Height = 16
+        Align = faBottomOnly
+        AutoSize = False
+        Borders.Style = bsBDiagonal
+        Layout = tlCenter
+        Text = ''
+        Visible = False
+      end
+      object RLDBText9: TRLDBText
+        Left = 641
+        Top = 6
+        Width = 83
+        Height = 16
+        Align = faBottomOnly
+        AutoSize = False
+        Borders.Style = bsBDiagonal
+        Layout = tlCenter
+        Text = ''
+        Visible = False
+      end
+    end
+    object RLBand_Rodape: TRLBand
+      Left = 38
+      Top = 161
+      Width = 718
+      Height = 20
+      BandType = btFooter
+      Borders.Sides = sdCustom
+      Borders.DrawLeft = False
+      Borders.DrawTop = True
+      Borders.DrawRight = False
+      Borders.DrawBottom = False
+      Borders.Width = 2
+      object RLSystemInfo3: TRLSystemInfo
+        Left = 561
+        Top = 5
+        Width = 115
+        Height = 11
+        Alignment = taRightJustify
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -10
+        Font.Name = 'Arial'
+        Font.Style = [fsBold, fsItalic]
+        Font.Quality = fqProof
+        Info = itPageNumber
+        ParentFont = False
+        Text = 'P'#225'gina : '
+      end
+      object RLSystemInfo5: TRLSystemInfo
+        Left = 677
+        Top = 5
+        Width = 102
+        Height = 11
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -10
+        Font.Name = 'Arial'
+        Font.Style = [fsBold, fsItalic]
+        Font.Quality = fqProof
+        Info = itLastPageNumber
+        ParentFont = False
+        Text = '/  '
+      end
+    end
+    object RLBandTotais: TRLBand
+      Left = 38
+      Top = 113
+      Width = 718
+      Height = 48
+      BandType = btSummary
+      Visible = False
+      object rlLabelTotal: TRLLabel
+        Left = 3
+        Top = 6
+        Width = 78
+        Height = 16
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Font.Quality = fqClearTypeNatural
+        ParentFont = False
+      end
+      object RLDBResult1: TRLDBResult
+        Left = 184
+        Top = 6
+        Width = 49
+        Height = 16
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Font.Quality = fqClearTypeNatural
+        Info = riCount
+        ParentFont = False
+        Text = ''
+      end
+    end
+  end
+end

@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Config><TipoConexao>FireDAC</TipoConexao><DriverDBFireDAC>MSSQL</DriverDBFireDAC><ServidorFireDAC>localhost\SQLEXPRESS</ServidorFireDAC><BancoDadosFireDAC>BS</BancoDadosFireDAC><UsuarioFireDAC>sa</UsuarioFireDAC><SenhaFireDAC>1208</SenhaFireDAC><PortaFireDAC>1433</PortaFireDAC></Config>

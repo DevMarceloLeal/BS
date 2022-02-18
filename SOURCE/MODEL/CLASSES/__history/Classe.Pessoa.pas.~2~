@@ -1,0 +1,53 @@
+unit Classe.Pessoa;
+
+interface
+
+uses
+  System.SysUtils,
+  Vcl.Forms,
+  Model.FireDAC.DataFunctions,
+  Auxiliar.Classes;
+
+type
+  TPessoa = class
+  private
+    FPES_ID: Integer;
+    FPES_NOME: String;
+    FPES_DATANASC: TDateTime;
+    FPES_TIPOSANG: String;
+    FPES_EMAIL: String;
+    FPES_CELULAR: String;
+    FPES_CPF: String;
+    FDBFuncoes: TDataFunctions;
+  public
+    constructor Create;
+    destructor Destroy; override;
+    class function New: TPessoa;
+    property PES_ID:       Integer   read FPES_ID       write FPES_ID;
+    property PES_NOME:     String    read FPES_NOME     write FPES_NOME;
+    property PES_DATANASC: TDateTime read FPES_DATANASC write FPES_DATANASC;
+    property PES_TIPOSANG: String    read FPES_TIPOSANG write FPES_TIPOSANG;
+    property PES_EMAIL:    String    read FPES_EMAIL    write FPES_EMAIL;
+    property PES_CELULAR:  String    read FPES_CELULAR  write FPES_CELULAR;
+    property PES_CPF:      String    read FPES_CPF      write FPES_CPF;
+  end;
+
+implementation
+
+{ TPessoa }
+
+constructor TPessoa.Create;
+begin
+end;
+
+destructor TPessoa.Destroy;
+begin
+  inherited;
+end;
+
+class function TPessoa.New: TPessoa;
+begin
+  Result := Self.Create;
+end;
+
+end.

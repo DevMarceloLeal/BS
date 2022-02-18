@@ -1,0 +1,21 @@
+inherited frmDoadores: TfrmDoadores
+  Caption = 'frmDoadores'
+  PixelsPerInch = 96
+  TextHeight = 15
+  inherited pnlCabecalho: TPanel
+    ExplicitWidth = 583
+    inherited lblTitulo: TLabel
+      Width = 583
+      Height = 38
+    end
+  end
+  inherited pnlTrabalho: TPanel
+    inherited pnlJanelaDados: TPanel
+      inherited pnlDBGrid: TPanel
+        inherited dbgCadastro: TDBGrid
+          Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+        end
+      end
+    end
+  end
+end

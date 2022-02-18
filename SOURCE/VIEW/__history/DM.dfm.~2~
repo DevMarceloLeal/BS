@@ -1,0 +1,15 @@
+object DataModule1: TDataModule1
+  Height = 201
+  Width = 389
+  PixelsPerInch = 96
+  object FDConnection1: TFDConnection
+    Params.Strings = (
+      'DriverID=MSSQL'
+      'User_Name=sa'
+      'Server=.\SQLEXPRESS'
+      'Password=1208')
+    LoginPrompt = False
+    Left = 104
+    Top = 72
+  end
+end

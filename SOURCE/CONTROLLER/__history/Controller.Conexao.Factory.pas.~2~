@@ -1,0 +1,56 @@
+unit Controller.Conexao.Factory;
+
+interface
+
+uses
+  Controller.Interfaces,
+  Model.Conexao.Interfaces,
+  Model.Conexao.Factory;
+//  Model.DAO.Interfaces,
+//  Model.DAO.Factory;
+
+type
+  TController = class(TInterfacedObject, iController)
+  private
+    FConexao: iModelConexaoFactory;
+//    FDAO: iModelDAOFactory;
+  public
+    constructor Create;
+    destructor Destroy; override;
+    class function New : iController;
+    function Conexao: iModelConexaoFactory;
+//    function DAO: iModelDAOFactory;
+  end;
+
+implementation
+
+{ TController }
+
+constructor TController.Create;
+begin
+  FConexao := TModelConexaoFactory.New;
+//  FDAO     := TModelDAOFactory.New;
+end;
+
+destructor TController.Destroy;
+begin
+  inherited;
+end;
+
+class function TController.New: iController;
+begin
+  Result := Self.Create;
+end;
+
+function TController.Conexao: iModelConexaoFactory;
+begin
+  Result := FConexao;
+end;
+
+//function TController.DAO: iModelDAOFactory;
+//begin
+//  Result := FDAO;
+//end;
+
+end.
+
